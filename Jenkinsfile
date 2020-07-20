@@ -4,10 +4,6 @@ pipeline {
     parameters {
         string(name: 'container-version', defaultValue: 'latest', description: 'Version for the container.')
     }
-    tools {
-        maven 'Maven 3.6.0'
-        jdk 'jdk8'
-    }
     stages {
         stage('Build') {
             steps {
