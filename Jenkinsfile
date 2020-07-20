@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'container-version', defaultValue: 'latest', description: 'Version for the container.')
+        string(name: 'image-version', defaultValue: 'latest', description: 'Version for the container.')
     }
     environment {
         registry = "efrainperez/pokeapi"
@@ -25,10 +25,10 @@ pipeline {
         }
         stage('Build Image') {
             steps {
-                unstash 'targetfiles'
                 script{
+                    unstash 'targetfiles'
                     echo 'Building docker container.'
-                    docker.build registry + ":${container-version}"
+                    def image = docker.build("${registry}:${image-version}", ' .')
                 }
 
             }
