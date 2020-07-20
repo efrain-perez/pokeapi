@@ -2,6 +2,7 @@ package dev.efrain.pokeapi.controller;
 
 import dev.efrain.pokeapi.service.BattleService;
 import dev.efrain.pokeapi.service.model.PokemonBattleInfo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -10,7 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller for Battle related information.
+ */
+@Api(value = "Battle controller.")
+@RestController
 public class BattleController {
 
     @Autowired

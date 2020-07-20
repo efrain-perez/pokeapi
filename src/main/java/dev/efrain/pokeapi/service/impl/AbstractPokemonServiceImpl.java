@@ -5,6 +5,7 @@ import dev.efrain.pokeapi.data.MoveDao;
 import dev.efrain.pokeapi.data.PokemonDao;
 import dev.efrain.pokeapi.data.TypeDao;
 import dev.efrain.pokeapi.model.*;
+import dev.efrain.pokeapi.service.error.LanguageNotFoundException;
 import dev.efrain.pokeapi.service.error.MoveNotFoundException;
 import dev.efrain.pokeapi.service.error.PokemonNotFoundException;
 import dev.efrain.pokeapi.service.error.TypeNotFoundException;
@@ -101,7 +102,7 @@ public class AbstractPokemonServiceImpl {
             language = languageDao.getLanguageByName(languageIdOrName.toLowerCase());
         }
         if (!language.isPresent()) {
-            throw new PokemonNotFoundException(languageIdOrName);
+            throw new LanguageNotFoundException(languageIdOrName);
         }
         return language.get();
     }
