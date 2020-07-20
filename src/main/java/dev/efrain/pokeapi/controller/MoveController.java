@@ -1,63 +1,34 @@
 package dev.efrain.pokeapi.controller;
 
-import dev.efrain.pokeapi.service.BattleService;
 import dev.efrain.pokeapi.service.MoveService;
 import dev.efrain.pokeapi.service.model.MoveTranslation;
-import dev.efrain.pokeapi.service.model.PokemonBattleInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
 /**
- * Controller for Pokemon related information.
+ * Controller for Move related information.
  */
-@Api(value = "This is a test")
+@Api(value = "Move controller.")
 @RestController
-public class PokemonController {
+public class MoveController {
 
     /**
      * Default language for moves when not provided.
      */
     private static final String DEFAULT_LANGUAGE = "en";
 
-    @Autowired
-    private BattleService battleService;
 
     @Autowired
     private MoveService moveService;
-
-    /**
-     * Gets information about a battle between 2 pokemons.
-     * This information includes name, types and attackMultiplier.
-     * <p>
-     * The order of first and second pokemon only affects the order in the results.
-     *
-     * @param firstPokemon  ID or name of the first pokemon.
-     * @param secondPokemon ID or name of the second pokemon.
-     * @return Battle information for the pokemons provided.
-     */
-    @ApiOperation(value = "Get relevant information for a battle between two pokemons.",
-            notes = "Provides information about a battle given 2 pokemons. This information includes name, types and " +
-                    "how one pokemon affects the other.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "Petition processed successfully"),
-            @ApiResponse(code = 400, message = "One pokemon could not be identified.")
-    })
-    @GetMapping(value = "/battle")
-    @ResponseBody
-    public PokemonBattleInfo getBattleMultiplier(
-            @ApiParam(value = "ID or name for the first pokemon", example = "charmander")
-            @RequestParam String firstPokemon,
-            @ApiParam(value = "ID or name for the second pokemon", example = "bulbasaur")
-            @RequestParam String secondPokemon) {
-        return battleService.getBattleInfo(firstPokemon, secondPokemon);
-    }
 
     /**
      * Gets the list of shared moves for the pokemons provided with the desired language translation.
@@ -77,9 +48,9 @@ public class PokemonController {
             @ApiResponse(code = 400, message = "One pokemon could not be identified or " +
                     "the language provided is not valid.")
     })
-    @GetMapping(value = "/shared-moves")
+    @GetMapping(value = "/moves/shared")
     @ResponseBody
-    public List<MoveTranslation> getBattleMultiplier(
+    public List<MoveTranslation> getSharedMoves(
             @ApiParam(value = "ID or Name for the pokemons", allowMultiple = true) @RequestParam List<String> pokemons,
             @ApiParam(value = "Preferred language", allowableValues = "ja-Hrkt,roomaji,ko,zh-Hant,fr,de,es,it,en," +
                     "cs,ja,zh-Hans,pt-BR")
@@ -88,6 +59,4 @@ public class PokemonController {
             @ApiParam(value = "Offset for the list") @RequestParam(required = false, defaultValue = "0") Integer offset) {
         return moveService.getMatchingMoves(pokemons, language, size, offset);
     }
-
-
 }
