@@ -37,7 +37,8 @@ If all you want is to run the application locally, you can do it by downloading 
 This will start a server on port `8080` and you can access going to `localhost:8080` on any browser.
 
 ## Running with Minikube
-To run our application on a Kubernetes cluster, we're going to user Minikube. Follow [this guide](https://kubernetes.io/docs/tasks/tools/install-minikube/) if you don't have it. Aditionally we're going to need the ingress plugin, which can be enabled by running this command: 
+To run our application on a Kubernetes cluster, we're going to user Minikube. Follow [this guide](https://kubernetes.io/docs/tasks/tools/install-minikube/) if you don't have it. 
+I suggest running minikube with the VirtualBox driver. Aditionally we're going to need the ingress plugin, which can be enabled by running this command: 
 ```
 minikube addons enable ingress
 ```
