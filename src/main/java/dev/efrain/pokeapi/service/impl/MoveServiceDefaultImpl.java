@@ -1,8 +1,14 @@
 package dev.efrain.pokeapi.service.impl;
 
-import dev.efrain.pokeapi.model.*;
+import dev.efrain.pokeapi.model.Language;
+import dev.efrain.pokeapi.model.Move;
+import dev.efrain.pokeapi.model.MoveSimpleWrapper;
+import dev.efrain.pokeapi.model.Pokemon;
+import dev.efrain.pokeapi.model.Type;
 import dev.efrain.pokeapi.service.MoveService;
 import dev.efrain.pokeapi.service.error.BusinessLogicException;
+import dev.efrain.pokeapi.service.error.InvalidOffsetException;
+import dev.efrain.pokeapi.service.error.InvalidPageSizeException;
 import dev.efrain.pokeapi.service.model.MoveTranslation;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +36,16 @@ public class MoveServiceDefaultImpl extends AbstractPokemonServiceImpl implement
      * @return List of shared moves.
      */
     @Override
-    public List<MoveTranslation> getMatchingMoves(List<String> pokemonIdsOrNames, String languageIdOrName, Integer pageSize, Integer offset) {
+    public List<MoveTranslation> getMatchingMoves(List<String> pokemonIdsOrNames, String languageIdOrName,
+                                                  Integer pageSize, Integer offset) {
+
+        validatePageSize(pageSize);
+        validateOffset(offset);
 
         Language language = getLanguageByIdOrName(languageIdOrName);
-        List<Pokemon> pokemons = pokemonIdsOrNames.parallelStream().map(p -> getPokemonByIdOrName(p)).collect(Collectors.toList());
+        List<Pokemon> pokemons = pokemonIdsOrNames.parallelStream()
+                .map(p -> getPokemonByIdOrName(p))
+                .collect(Collectors.toList());
         if (pokemons.isEmpty()) {
             return new ArrayList<>();
         }
@@ -67,6 +79,26 @@ public class MoveServiceDefaultImpl extends AbstractPokemonServiceImpl implement
             moves.add(moveTranslation);
         }
         return moves;
+    }
+
+    /**
+     * Validate that the provide offset is valid.
+     * @param offset Value to be validated.
+     */
+    private void validateOffset(Integer offset) {
+        if(offset < 0) {
+            throw new InvalidOffsetException(offset);
+        }
+    }
+
+    /**
+     * Validate that the provide pageSize is valid.
+     * @param pageSize Value to be validated.
+     */
+    private void validatePageSize(Integer pageSize) {
+        if(pageSize < 0) {
+            throw new InvalidPageSizeException(pageSize);
+        }
     }
 
     /**
