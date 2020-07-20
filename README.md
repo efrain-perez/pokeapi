@@ -43,21 +43,26 @@ minikube addons enable ingress
 ```
 With minikube up and running we can set up our application executing these commands (one by one):
 ```
-kubectl apply -f deployment/pokeapi-namespace.yml
-kubectl apply -f deployment/pokeapi-deployment.yml
-kubectl apply -f deployment/pokeapi-service.yml
-kubectl apply -f deployment/pokeapi-ingress.yml
+kubectl apply -f deployment/pokeapi-deployment-local.yml
+kubectl apply -f deployment/pokeapi-service-local.yml
+kubectl apply -f deployment/pokeapi-ingress-local.yml
 ```
 To verify each compoment you can execute 
 ```
-kubectl get namespace --namespace=pokeapi-prod
-kubectl get deployment --namespace=pokeapi-prod
-kubectl get service --namespace=pokeapi-prod
-kubectl get ingress --namespace=pokeapi-prod
+kubectl get deployment
+kubectl get service
+kubectl get ingress
 ```
-Each of these should return one element except for namespace. 
+Each of these should return one element. 
 
-To access our application go to the address indicated on the ingress result, if the column is empty, you have to wait a few minutes to get a result.
+To access our application you will need the address indicated on the ingress result, if the column is empty, you have to wait a few minutes to get a result.
+
+Once you have the address, modify the file `/etc/hosts` and add this at the end:
+```
+{INGRESS_ADDRESS} local-pokeapi.info
+```
+
+After this, go to local-pokeapi.info in your browser.
 
 ### Making changes
 To get changes in your local minikube instance, you have to push your code and make a new image using our [Jenkins instance](https://jenkins.efrain.dev).
