@@ -26,8 +26,11 @@ pipeline {
         stage('Build Image') {
             steps {
                 unstash 'targetfiles'
-                echo 'Building docker container.'
-                docker.build registry + ":${container-version}"
+                script{
+                    echo 'Building docker container.'
+                    docker.build registry + ":${container-version}"
+                }
+
             }
         }
     }
