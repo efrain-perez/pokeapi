@@ -33,7 +33,7 @@ public class MoveServiceDefaultImpl extends AbstractPokemonServiceImpl implement
     public List<MoveTranslation> getMatchingMoves(List<String> pokemonIdsOrNames, String languageIdOrName, Integer pageSize, Integer offset) {
 
         Language language = getLanguageByIdOrName(languageIdOrName);
-        List<Pokemon> pokemons = pokemonIdsOrNames.stream().map(p -> getPokemonByIdOrName(p)).collect(Collectors.toList());
+        List<Pokemon> pokemons = pokemonIdsOrNames.parallelStream().map(p -> getPokemonByIdOrName(p)).collect(Collectors.toList());
         if (pokemons.isEmpty()) {
             return new ArrayList<>();
         }
@@ -51,7 +51,7 @@ public class MoveServiceDefaultImpl extends AbstractPokemonServiceImpl implement
             matchingMoves = currentMatchingMoves;
         }
 
-        List<Move> detailedMatchingMoves =  matchingMoves.stream()
+        List<Move> detailedMatchingMoves =  matchingMoves.parallelStream()
                 .map(m -> getPokemonMoveByName(m))
                 .collect(Collectors.toCollection(ArrayList::new));
 
