@@ -1,5 +1,7 @@
 pipeline {
 
+    agent any
+
     parameters {
         string(name: 'container-version', defaultValue: 'latest', description: 'Version for the container.')
     }
