@@ -32,7 +32,7 @@ pipeline {
                     echo 'Building docker container.'
                     docker.build("${env.registry}:${params.'container-version'}", ' .')
                     docker.withRegistry("${env.registryUrl}/${env.registryUser}", registryCredential) {
-                        def customImage = docker.build("${env.registryUrl}/${env.imageName}:${params.'container-version'}")
+                        def customImage = docker.build("${env.registryUser}/${env.imageName}:${params.'container-version'}")
                         customImage.push()
                         sh "docker rmi --force \$(docker images -q ${customImage.id} | uniq)"
                     }
