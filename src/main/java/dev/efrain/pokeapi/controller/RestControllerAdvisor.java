@@ -8,6 +8,7 @@ import dev.efrain.pokeapi.service.error.LanguageNotFoundException;
 import dev.efrain.pokeapi.service.error.PokemonNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -71,6 +72,20 @@ public class RestControllerAdvisor {
     }
 
     /**
+     * When Spring throws MissingServletRequestParameterException we should let the user that the missing parameter
+     * is required to work properly.
+     *
+     * @param e Exception gotten.
+     * @return Response entity with the message on the exception.
+     */
+    @ExceptionHandler(value = MissingServletRequestParameterException.class)
+    public ResponseEntity<ErrorEntity> handleAnyOtherException(MissingServletRequestParameterException e){
+        ErrorEntity errorEntity = new ErrorEntity();
+        errorEntity.setMessage("Parameter " + e.getParameterName() + " is required.");
+        return new ResponseEntity<>(errorEntity, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
      * When non of the above exceptions is present, but is one of our exceptions, it means that we had something
      * wrong but we can provide some information for further investigation.
      *
@@ -83,6 +98,7 @@ public class RestControllerAdvisor {
         errorEntity.setMessage("Something went wrong on our side: " + e.getMessage());
         return new ResponseEntity<>(errorEntity, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     /**
      * When non of the above exceptions is present, and is NOT one of our exceptions, it means that we had something
