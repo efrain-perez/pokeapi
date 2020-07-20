@@ -1,7 +1,6 @@
 pipeline {
 
     agent any
-    def image
 
     parameters {
         string(name: 'container-version', defaultValue: 'latest', description: 'Version for the container.')
@@ -29,7 +28,7 @@ pipeline {
                 script{
                     unstash 'targetfiles'
                     echo 'Building docker container.'
-                    image = docker.build("efrainperez:${container-version}", ' .')
+                    docker.build("efrainperez:${container-version}", ' .')
                 }
 
             }
