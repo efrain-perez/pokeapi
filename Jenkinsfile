@@ -20,7 +20,7 @@ pipeline {
         stage('Build Container') {
             steps {
                 echo 'Building docker container.'
-                sh 'docker build -t efrainperez/pokeapi:${container-version}'
+                sh 'docker build -t efrainperez/pokeapi:${container-version} .'
             }
         }
     }
