@@ -18,5 +18,6 @@ spec:
       containers:
       - name: pokeapi
         image: efrainperez/pokeapi:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
