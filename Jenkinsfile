@@ -28,7 +28,7 @@ pipeline {
                 script{
                     unstash 'targetfiles'
                     echo 'Building docker container.'
-                    docker.build("efrainperez:${container-version}", ' .')
+                    docker.build("efrainperez:${params.'container-version'}", ' .')
                 }
 
             }
