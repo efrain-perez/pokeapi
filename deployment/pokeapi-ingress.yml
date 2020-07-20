@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1 # for versions before 1.14 use extensions/v1beta1
+kind: Ingress
+metadata:
+  name: pokeapi-ingress
+  namespace: pokeapi-prod
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+spec:
+  rules:
+    - http:
+        paths:
+        - path: /*
+          backend:
+            serviceName: pokeapi
+            servicePort: 8080
