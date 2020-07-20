@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pokeapi-deployment
+  labels:
+    app: pokeapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pokeapi
+  template:
+    metadata:
+      labels:
+        app: pokeapi
+    spec:
+      containers:
+      - name: pokeapi
+        image: efrainperez/pokeapi:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
