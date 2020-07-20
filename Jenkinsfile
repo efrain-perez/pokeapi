@@ -1,10 +1,11 @@
-node {
-    agent any
-
-    def dockerImage
+pipeline {
 
     parameters {
         string(name: 'container-version', defaultValue: 'latest', description: 'Version for the container.')
+    }
+    environment {
+        registry = "efrainperez/pokeapi"
+        registryCredential = 'dockerhub'
     }
     stages {
         stage('Build') {
@@ -24,14 +25,7 @@ node {
             steps {
                 unstash 'targetfiles'
                 echo 'Building docker container.'
-                dockerImage = docker.build("efrainperez/pokeapi:${container-version}", ' .')
-            }
-        }
-        stage('Push image') {
-            steps {
-                docker.withRegistry('https://registry-1.docker.io/v2/', 'docker-hub-credentials') {
-                    dockerImage.push()
-                }
+                docker.build registry + ":${container-version}"
             }
         }
     }
