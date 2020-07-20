@@ -1,6 +1,8 @@
 pipeline {
     agent any
 
+    def dockerImage
+
     parameters {
         string(name: 'container-version', defaultValue: 'latest', description: 'Version for the container.')
     }
@@ -18,11 +20,18 @@ pipeline {
                 sh 'mvn clean test'
             }
         }
-        stage('Build Container') {
+        stage('Build Image') {
             steps {
                 unstash 'targetfiles'
                 echo 'Building docker container.'
-                sh 'docker build -t efrainperez/pokeapi:${container-version} .'
+                dockerImage = docker.build("efrainperez/pokeapi:${container-version}", ' .')
+            }
+        }
+        stage('Push image') {
+            steps {
+                docker.withRegistry('https://registry-1.docker.io/v2/', 'docker-hub-credentials') {
+                    dockerImage.push()
+                }
             }
         }
     }
