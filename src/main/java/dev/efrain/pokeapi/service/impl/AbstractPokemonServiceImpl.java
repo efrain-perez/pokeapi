@@ -51,7 +51,7 @@ public class AbstractPokemonServiceImpl {
         if (idOrName.matches("[0-9]+")) {
             pokemon = pokemonDao.getPokemonById(Integer.valueOf(idOrName));
         } else {
-            pokemon = pokemonDao.getPokemonByName(idOrName);
+            pokemon = pokemonDao.getPokemonByName(idOrName.toLowerCase());
         }
         if (!pokemon.isPresent()) {
             throw new PokemonNotFoundException(idOrName);
@@ -98,7 +98,7 @@ public class AbstractPokemonServiceImpl {
         if (languageIdOrName.matches("[0-9]+")) {
             language = languageDao.getLanguageById(Integer.valueOf(languageIdOrName));
         } else {
-            language = languageDao.getLanguageByName(languageIdOrName);
+            language = languageDao.getLanguageByName(languageIdOrName.toLowerCase());
         }
         if (!language.isPresent()) {
             throw new PokemonNotFoundException(languageIdOrName);
