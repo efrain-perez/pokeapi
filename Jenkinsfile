@@ -9,7 +9,7 @@ pipeline {
             steps {
                 echo 'Building project'
                 sh 'mvn clean package'
-                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+                stash includes: 'target/*.jar', name: 'targetfiles'
             }
         }
         stage('Test') {
@@ -20,6 +20,7 @@ pipeline {
         }
         stage('Build Container') {
             steps {
+                unstash 'targetfiles'
                 echo 'Building docker container.'
                 sh 'docker build -t efrainperez/pokeapi:${container-version} .'
             }
